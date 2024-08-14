@@ -7,7 +7,7 @@ const expressSession = require("express-session");
 const pgSession = require("connect-pg-simple")(expressSession);
 const pgPool = require("./db/pool");
 const passport = require("passport");
-require("./strategies/local-strategy")
+require("./strategies/local-strategy");
 
 require("dotenv").config();
 
@@ -43,9 +43,7 @@ app.use(
   })
 );
 
-
-
-app.use(passport.initialize())
+app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(routes);

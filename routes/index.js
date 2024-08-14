@@ -3,6 +3,7 @@ const router = express.Router();
 const { body, validationResult } = require("express-validator");
 const db = require("../db/queries");
 const passport = require("passport");
+const { hashPassword } = require("../utils/passwordUtils");
 
 /* GET home page. */
 router.get("/", (req, res, next) => {
@@ -51,24 +52,27 @@ router.post("/sign-up", [
     .isLength({ min: 6, max: 20 })
     .withMessage("password must contain between 6 and 20 characters."),
   async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).send({ errors: errors.array() });
+    }
+    const newUser = {
+      username: req.body.username,
+      password: req.body.password,
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
+    };
     try {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).send({ errors: errors.array() });
-      }
-      const newUser = {
-        username: req.body.username,
-        password: req.body.password,
-        first_name: req.body.first_name,
-        last_name: req.body.last_name,
-      };
+      newUser.password = hashPassword(newUser.password);
       const saveUser = await db.createNewUser(newUser);
+      console.log(saveUser);
       res.redirect("/login");
     } catch (err) {
       next(err, null);
     }
   },
 ]);
+
 router.get("/login/status", (req, res, next) => {
   console.log(req.user);
   console.log(req.session);
