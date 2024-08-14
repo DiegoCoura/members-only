@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const { body, validationResult } = require("express-validator");
+const { body, validationResult, checkSchema } = require("express-validator");
 const db = require("../db/queries");
 const passport = require("passport");
 const { hashPassword } = require("../utils/passwordUtils");
+const { signUpValidationSchema } = require("../utils/validationSchemas");
 
 /* GET home page. */
 router.get("/", (req, res, next) => {
@@ -22,35 +23,9 @@ router.get("/sign-up", (req, res, next) => {
   res.render("signupForm");
 });
 
-router.post("/sign-up", [
-  body("first_name")
-    .trim()
-    .notEmpty()
-    .withMessage("first name must be provided")
-    .isLength({ max: 20 })
-    .withMessage("must contain 20 characters maximum"),
-  body("last_name")
-    .trim()
-    .notEmpty()
-    .withMessage("last name must be provided")
-    .isLength({ max: 20 })
-    .withMessage("must contain 20 characters maximum"),
-  body("username")
-    .trim()
-    .notEmpty()
-    .isEmail()
-    .withMessage("An email must be provided")
-    .custom(async (email) => {
-      const inUse = await db.findByEmail(email);
-      if (inUse) {
-        throw new Error("User already exists!");
-      }
-    }),
-  body("password")
-    .trim()
-    .notEmpty()
-    .isLength({ min: 6, max: 20 })
-    .withMessage("password must contain between 6 and 20 characters."),
+router.post(
+  "/sign-up",
+  checkSchema(signUpValidationSchema),
   async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -70,8 +45,8 @@ router.post("/sign-up", [
     } catch (err) {
       next(err, null);
     }
-  },
-]);
+  }
+);
 
 router.get("/login/status", (req, res, next) => {
   console.log(req.user);
