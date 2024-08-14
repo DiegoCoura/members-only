@@ -4,7 +4,12 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const expressSession = require("express-session");
-require('dotenv').config()
+const pgSession = require("connect-pg-simple")(expressSession);
+const pgPool = require("./db/pool");
+const passport = require("passport");
+require("./strategies/local-strategy")
+
+require("dotenv").config();
 
 const routes = require("./routes/index");
 
@@ -20,14 +25,28 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use(expressSession({
-  secret: process.env.SECRET,
-  saveUninitialized: false,
-  resave: false,
-  cookie: {
-    maxAge: 60000 * 60, // 1 hour
-  }
-}));
+const sessionStore = new pgSession({
+  pool: pgPool, // Connection pool
+  tableName: "users_sessions", // Use another table-name than the default "session" one
+  // Insert connect-pg-simple options here
+});
+
+app.use(
+  expressSession({
+    // store: sessionStore,
+    secret: process.env.SECRET,
+    saveUninitialized: false,
+    resave: false,
+    cookie: {
+      maxAge: 60000 * 60, // 1 hour
+    },
+  })
+);
+
+
+
+app.use(passport.initialize())
+app.use(passport.session());
 
 app.use(routes);
 
