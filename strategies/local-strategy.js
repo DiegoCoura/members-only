@@ -1,0 +1,32 @@
+const passport = require("passport");
+const { Strategy } = require("passport-local");
+const db = require("../db/queries");
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser(async (userId, done) => {
+  try {
+    const user = await db.findById(userId);    
+    if(!user) throw new Error("User Not Found")
+    done(null, user);
+  } catch (err) {
+    done(err, null);
+  }
+});
+
+passport.use(
+  new Strategy(async (username, password, done) => {
+    console.log(`Username: ${username}, Password: ${password}`);
+    try {
+      const findUser = await db.findByEmail(username);
+      if (!findUser) throw new Error("User not found");
+      if (findUser.password !== password) throw new Error("Invalid password");
+      done(null, findUser);
+    } catch (err) {
+      done(err, null);
+    }
+  })
+);
+
