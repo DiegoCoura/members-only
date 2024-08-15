@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %></title>
+    <title>Members-Only</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <%- include('partials/navbar.ejs') %>
+    <div class="msg-board">
+      <div class="msg-card">
+        <p>User:</p>
+        <p>Message:</p>
+        <p>Date: </p>
+    </div>
+    </div>
   </body>
 </html>
