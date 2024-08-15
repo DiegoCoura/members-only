@@ -33,7 +33,7 @@ const sessionStore = new pgSession({
 
 app.use(
   expressSession({
-    // store: sessionStore,
+    store: sessionStore,
     secret: process.env.SECRET,
     saveUninitialized: false,
     resave: false,

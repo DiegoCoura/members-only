@@ -4,7 +4,7 @@ const db = require("../db/queries");
 const { comparePassword } = require("../utils/passwordUtils");
 
 passport.serializeUser((user, done) => {
-  done(null, user.id);
+  done(null, user.user_id);
 });
 
 passport.deserializeUser(async (userId, done) => {
@@ -23,7 +23,7 @@ passport.use(
     try {
       const findUser = await db.findByEmail(username);
       if (!findUser) throw new Error("User not found");
-      if (!comparePassword(password, findUser.password)) throw new Error("Bad credentials");
+      if (!comparePassword(password, findUser.hash)) throw new Error("Bad credentials");
       done(null, findUser);
     } catch (err) {
       done(err, null);
