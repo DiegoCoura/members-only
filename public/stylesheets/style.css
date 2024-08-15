@@ -1,14 +1,51 @@
+html {
+  height: -webkit-fill-available;
+}
+
 body {
-  padding: 50px;
+  padding: 20px;
+  margin: 0px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
-  color: #00B7FF;
+  color: #00b7ff;
 }
 
-form{
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+}
+
+.form-container {
+  width: 70%;
+  max-width: 600px;
+  margin: 20px auto;
+}
+
+form {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 6px;
+  height: 600px;
+  margin: 0 auto;
+  align-items: stretch;
+}
+
+.msg-board {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-bottom-options {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+}
+
+.text-center {
+  text-align: center;
 }
