@@ -16,7 +16,7 @@ router.get("/", (req, res, next) => {
     console.log(sessionData);
   });
   req.session.visited = true;
-  res.render("index", { title: "Express" });
+  res.render("index");
 });
 
 router.get("/sign-up", (req, res, next) => {
