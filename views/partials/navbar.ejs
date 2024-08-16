@@ -1,13 +1,29 @@
 <nav class="navbar">
   <div class="nav-left">
+    <% if(user) { %>
+    <h1>Welcome</h1>
+    <p><strong><%= user.firstname %> <%= user.lastname %></strong></p>
+    <% if(!user.membership_status) { %>
+    <p>
+      <a href="/secret-question">Answer the secret question to became a real member!</a>
+    </p>
+    <% } %>
+
+    <% } else { %>
+
     <h1>Members-Only</h1>
     <p>
       Welcome to Members-Only, become a member and respond the secret question
       to know who send the messages!
     </p>
+    <% } %>
   </div>
   <div class="nav-right">
+    <%if(user){%>
+    <a href="/logout">Logout</a>
+    <%} else { %>
     <a href="/login">Login</a>
     <a href="/sign-up">Sign up</a>
+    <%}%>
   </div>
 </nav>
