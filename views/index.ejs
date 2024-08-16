@@ -7,11 +7,15 @@
   <body>
     <%- include('partials/navbar.ejs') %>
     <div class="msg-board">
-      <div class="msg-card">
-        <p>User:</p>
-        <p>Message:</p>
-        <p>Date: </p>
-    </div>
+      <% if(locals.messages) { %>
+        <% locals.messages.forEach((message) => { %>
+          <div class="msg-card">
+            <p>User: <%= locals.user && locals.user.membership_status ? message.username : "Anonymous" %> </p>
+            <p>Message: <%= message.message %></p>
+            <p>Date: <%= message.created_at %></p>
+        </div>
+        <%})%>
+      <%}%>
     <% if(locals.user && locals.user.membership_status) { %>
       <%- include('partials/newMessage.ejs')%>
     <%}%>
