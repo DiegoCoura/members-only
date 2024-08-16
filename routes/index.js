@@ -28,15 +28,25 @@ router.post(
   checkSchema(signUpValidationSchema),
   async (req, res, next) => {
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).send({ errors: errors.array() });
-    }
     const newUser = {
       username: req.body.username,
       password: req.body.password,
       first_name: req.body.first_name,
       last_name: req.body.last_name,
     };
+    
+    if (!errors.isEmpty()) {
+      const firstErrors = [];
+      errors.errors.forEach((err) => {
+        if(!firstErrors.find((sameErr) => sameErr.path === err.path)){
+          firstErrors.push(err)
+        }
+      })
+      res.render("signupForm",{ 
+        user: newUser,
+        errors: firstErrors });
+      return 
+    }
     try {
       newUser.password = hashPassword(newUser.password);
       const saveUser = await db.createNewUser(newUser);
