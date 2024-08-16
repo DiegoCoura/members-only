@@ -18,8 +18,7 @@ input:focus,
 select:focus,
 textarea:focus,
 button:focus {
-    outline: 2px solid black;
-   
+  outline: 2px solid black;
 }
 
 .navbar {
@@ -54,26 +53,36 @@ button:focus {
   border-radius: 8px;
 }
 
-.new-msg-container {
-  position: absolute;
-  width: -webkit-fill-available;
-  bottom: 10px;
+.messages-wrapper {
+  display: flex;
+  flex-direction: column;
+  background: rgb(27 40 67);
+  overflow: overlay;
 }
 
-.new-msg-form{
+.new-msg-container {
+  position: sticky;
+  width: -webkit-fill-available;
+  bottom: 10px;
+  margin: 15px 0;
+}
+
+.new-msg-form {
   display: flex;
   width: 98%;
   gap: 10px;
 }
 
-.new-msg-input{
+.new-msg-input {
   padding: 10px 20px;
   border-radius: 20px;
   border: none;
   font-size: 1rem;
+  width: 70%;
+  max-width: 800px;
 }
 
-.blue-btn{
+.blue-btn {
   background: #299eee;
   border: none;
   padding: 10px 20px;
@@ -93,3 +102,5 @@ button:focus {
 .text-center {
   text-align: center;
 }
+
+
