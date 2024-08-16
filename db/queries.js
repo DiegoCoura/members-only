@@ -27,6 +27,20 @@ exports.createNewUser = async (userInfos) => {
   return rows;
 };
 
+exports.getAllMessages = async () => {
+  const { rows } = await pool.query("SELECT * FROM messages");
+  return rows;
+};
+
+exports.createNewMessage = async (newMessage) => {
+  console.log(newMessage)
+  const { rows } = await pool.query(
+    "INSERT INTO messages (user_id, message) VALUES ($1, $2) RETURNING *",
+    [newMessage.user_id, newMessage.message]
+  );
+  return rows;
+};
+
 exports.setMembershipTrue = async (userId) => {
   const { rows } = await pool.query(
     "UPDATE users SET membership_status = true WHERE user_id = $1 RETURNING username, membership_status",
@@ -36,9 +50,9 @@ exports.setMembershipTrue = async (userId) => {
 };
 
 exports.setMembershipFalse = async (userId) => {
-    const { rows } = await pool.query(
-      "UPDATE users SET membership_status = false WHERE user_id = $1 RETURNING username, membership_status",
-      [userId]
-    );
-    return rows[0];
-  };
+  const { rows } = await pool.query(
+    "UPDATE users SET membership_status = false WHERE user_id = $1 RETURNING username, membership_status",
+    [userId]
+  );
+  return rows[0];
+};
