@@ -6,8 +6,14 @@ const { hashPassword } = require("../utils/passwordUtils");
 exports.index = async (req, res, next) => {
   try {
     const messages = await db.getAllMessages();
-
-    res.render("index", { user: req.user, messages: messages });
+    const user = {
+      user_id: req.user.user_id,
+      username: req.user.username,
+      firstname: req.user.firstname,
+      lastname: req.user.lastname,
+      membership_status: req.user.membership_status
+    }
+    res.render("index", { user: user, messages: messages });
   } catch (err) {
     next(err);
   }
