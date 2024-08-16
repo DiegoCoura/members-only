@@ -24,14 +24,20 @@ exports.signUpValidationSchema = {
       "Last name must be at least 5 characters with a max of 50 characters",
   },
   username: {
-    notEmpty: true,
+    notEmpty: {
+      errorMessage: "An email must be provided"
+    },
     trim: true,
-    isEmail: true,
+    isEmail: {
+      errorMessage: "Invalid email"
+    },
     custom: {
       options: async (email) => {
         const inUse = await db.findByEmail(email);
         if (inUse) {
           throw new Error("User already exists!");
+        } else {
+          return true
         }
       },
     },
