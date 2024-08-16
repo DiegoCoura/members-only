@@ -12,6 +12,9 @@
         <p>Message:</p>
         <p>Date: </p>
     </div>
+    <% if(locals.user && locals.user.membership_status) { %>
+      <%- include('partials/newMessage.ejs')%>
+    <%}%>
     </div>
   </body>
 </html>
