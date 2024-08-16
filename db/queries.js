@@ -28,7 +28,7 @@ exports.createNewUser = async (userInfos) => {
 };
 
 exports.getAllMessages = async () => {
-  const { rows } = await pool.query("SELECT * FROM messages");
+  const { rows } = await pool.query("SELECT messages.*, users.username FROM messages LEFT JOIN users ON messages.user_id = users.user_id");
   return rows;
 };
 
