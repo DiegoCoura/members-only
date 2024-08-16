@@ -1,21 +1,25 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Members-Only</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
     <%- include('partials/navbar.ejs') %>
     <div class="msg-board">
-      <% if(locals.messages) { %>
-        <% locals.messages.forEach((message) => { %>
-          <div class="msg-card">
-            <p>User: <%= locals.user && locals.user.membership_status ? message.username : "Anonymous" %> </p>
-            <p>Message: <%= message.message %></p>
-            <p>Date: <%= message.created_at %></p>
-        </div>
-        <%})%>
-      <%}%>
+      <div class="messages-wrapper">
+        <% if(locals.messages) { %>
+          <% locals.messages.forEach((message) => { %>
+            <div class="msg-card">
+              <p>User: <%= locals.user && locals.user.membership_status ? message.username : "Anonymous" %> </p>
+              <p>Message: <%= message.message %></p>
+              <p>Date: <%= message.created_at %></p>
+            </div>
+          <%})%>
+        <%}%>
+      </div>
     <% if(locals.user && locals.user.membership_status) { %>
       <%- include('partials/newMessage.ejs')%>
     <%}%>
