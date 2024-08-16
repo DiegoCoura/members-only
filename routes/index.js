@@ -16,7 +16,7 @@ router.get("/", (req, res, next) => {
     console.log(sessionData);
   });
   req.session.visited = true;
-  res.render("index");
+  res.render("index", { user: req.user });
 });
 
 router.get("/sign-up", (req, res, next) => {
@@ -60,15 +60,63 @@ router.get("/login", (req, res, next) => {
 });
 
 router.post("/login", passport.authenticate("local"), (req, res) => {
-  return res.send("You are logged in");
+  return res.render("index", {
+    user: req.user,
+  });
 });
 
 router.get("/logout", (req, res, next) => {
   if (!req.user) return res.sendStatus(401);
   req.logout((err) => {
     if (err) return next(err);
-    res.redirect("/");
+    res.render("index", { user: req.user });
   });
 });
+
+router.get("/secret-question", (req, res, next) => {
+  if (!req.user) {
+    const error = new Error("Unauthorized");
+    error.status = 401;
+    res.render("error", {
+      error: error,
+      message: "You must create an account first!",
+    });
+  } else if(req.user.membership_status) {
+    res.redirect("/");
+  } else {
+    res.render("secretQuestionForm");
+  }
+});
+
+router.post(
+  "/secret-question",
+  [
+    body("secret_code")
+      .trim()
+      .notEmpty()
+      .withMessage("You must answer the question!")
+      .toLowerCase()
+      .custom((code) => {
+        if (code != "scabbers") {
+          throw new Error("Try again!");
+        } else {
+          return true;
+        }
+      }),
+  ],
+  async (req, res, next) => {
+    console.log(req.user.user_id);
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.render("secretQuestionForm", {
+        errors: errors.array(),
+      });
+      return
+    } else {
+      await db.setMembershipTrue(req.user.user_id)
+      res.redirect("/");
+    }
+  }
+);
 
 module.exports = router;
