@@ -6,6 +6,10 @@ const { hashPassword } = require("../utils/passwordUtils");
 exports.index = async (req, res, next) => {
   try {
     const messages = await db.getAllMessages();
+    if(!req.user){
+      res.render("index", { user: "", messages: messages });
+      return
+    } 
     const user = {
       user_id: req.user.user_id,
       username: req.user.username,
