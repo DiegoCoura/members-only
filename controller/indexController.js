@@ -112,6 +112,20 @@ exports.send_message_post = [
   },
 ];
 
+exports.delete_message_post = async(req,res,next)=>{
+  try {    
+    if(!req.user) {
+      const err = new Error("Unauthorized")
+      err.status = 401
+      return next(err)      
+    }
+    await db.deleteMessage(req.body.msg_id, req.user.user_id)
+    return res.redirect("/")
+  } catch (err) {
+    next(err)
+  }
+}
+
 exports.secret_question_get = (req, res, next) => {
   try {
     if (!req.user) {
