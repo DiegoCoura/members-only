@@ -21,6 +21,8 @@ router.get("/logout", indexController.logout);
 
 router.post("/message/new", indexController.send_message_post);
 
+router.post("/message/delete", indexController.delete_message_post)
+
 router.get("/secret-question", indexController.secret_question_get);
 
 router.post("/secret-question", indexController.secret_question_post);
