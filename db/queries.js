@@ -28,12 +28,30 @@ exports.createNewUser = async (userInfos) => {
 };
 
 exports.getAllMessages = async () => {
-  const { rows } = await pool.query("SELECT messages.*, users.username FROM messages LEFT JOIN users ON messages.user_id = users.user_id");
+  const { rows } = await pool.query(
+    "SELECT messages.*, users.username FROM messages LEFT JOIN users ON messages.user_id = users.user_id"
+  );
+  return rows;
+};
+
+exports.getMessageById = async (msgId) => {
+  const { rows } = await pool.query(
+    "SELECT * FROM messages WHERE message_id = $1",
+    [msgId]
+  );
+  return rows[0];
+};
+
+exports.deleteMessage = async (msgId, userId) => {
+  const { rows } = await pool.query(
+    "DELETE FROM messages WHERE message_id = $1 AND user_id = $2 RETURNING *",
+    [msgId, userId]
+  );
   return rows;
 };
 
 exports.createNewMessage = async (newMessage) => {
-  console.log(newMessage)
+  console.log(newMessage);
   const { rows } = await pool.query(
     "INSERT INTO messages (user_id, message) VALUES ($1, $2) RETURNING *",
     [newMessage.user_id, newMessage.message]
