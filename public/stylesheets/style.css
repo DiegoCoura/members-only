@@ -60,6 +60,29 @@ button:focus {
   overflow: overlay;
 }
 
+.msg-card{
+  position:relative;
+  border-bottom: .5px #7b97cb solid;
+  padding: 10px 15px;
+}
+
+.delete-btn{
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  top: 15px;
+}
+
+.trash-icon{
+  width: 22px;
+}
+
+.delete-btn:hover{
+  transform: scale(1.1);
+}
+
 .new-msg-container {
   position: sticky;
   width: -webkit-fill-available;
@@ -102,5 +125,6 @@ button:focus {
 .text-center {
   text-align: center;
 }
+
 
 
