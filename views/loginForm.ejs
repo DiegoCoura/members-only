@@ -11,10 +11,23 @@
         <h1 class="text-center">Login</h1>
         <label for="username">Email:</label>
         <input id="username" name="username" placeholder="Email" type="text" />
+        <% locals.errors && errors.find((err) => { %>
+            <% if(err.path === 'username') { %>
+              <span class="error-msg"><%=err.msg%></span>
+              <%}%>
+        <% }) %>
+
         <label for="password">Password:</label>
         <input id="password" name="password" type="password" />
+        <% locals.errors && errors.find((err) => { %>
+          <% if(err.path === 'password') { %>
+            <span class="error-msg"><%=err.msg%></span>
+            <%}%>
+      <% }) %>
         <button>Login</button>
-        <strong class="text-center">Don't have an account? <a href="/sign-up">Sign up</a></strong>
+        <strong class="text-center"
+          >Don't have an account? <a href="/sign-up">Sign up</a></strong
+        >
       </form>
     </div>
   </body>
