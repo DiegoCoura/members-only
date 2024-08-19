@@ -18,12 +18,16 @@ passport.deserializeUser(async (userId, done) => {
 });
 
 passport.use(
-  new Strategy(async (username, password, done) => {
-    console.log(`Username: ${username}, Password: ${password}`);
+  new Strategy( { passReqToCallback: true},async (req, username, password, done) => {
+    console.log(req.session.messages)
     try {
       const findUser = await db.findByEmail(username);
-      if (!findUser) throw new Error("User not found");
-      if (!comparePassword(password, findUser.hash)) throw new Error("Bad credentials");
+      if (!findUser) {
+        return done(null, false, { message: "Incorrect username"})
+      };
+      if (!comparePassword(password, findUser.hash)) {
+        return done(null, false, { message: "Incorrect password"})
+      }
       done(null, findUser);
     } catch (err) {
       done(err, null);
