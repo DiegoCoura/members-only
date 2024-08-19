@@ -6,17 +6,17 @@ const { hashPassword } = require("../utils/passwordUtils");
 exports.index = async (req, res, next) => {
   try {
     const messages = await db.getAllMessages();
-    if(!req.user){
+    if (!req.user) {
       res.render("index", { user: "", messages: messages });
-      return
-    } 
+      return;
+    }
     const user = {
       user_id: req.user.user_id,
       username: req.user.username,
       firstname: req.user.firstname,
       lastname: req.user.lastname,
-      membership_status: req.user.membership_status
-    }
+      membership_status: req.user.membership_status,
+    };
     res.render("index", { user: user, messages: messages });
   } catch (err) {
     next(err);
@@ -25,11 +25,20 @@ exports.index = async (req, res, next) => {
 
 exports.login_get = (req, res, next) => {
   if (req.user) return res.redirect("/");
+  if (req.session.messages) {
+    const error = req.session.messages[0];
+    const errors = [
+      {
+        path: error.split(" ")[1],
+        msg: error,
+      },
+    ];
+    req.session.messages = undefined;
+    res.render("loginForm", { errors: errors });
+    return;
+  }
   res.render("loginForm");
-};
-
-exports.login_post = (req, res, next) => {
-  return res.redirect("/");
+  return;
 };
 
 exports.logout = (req, res, next) => {
@@ -112,19 +121,19 @@ exports.send_message_post = [
   },
 ];
 
-exports.delete_message_post = async(req,res,next)=>{
-  try {    
-    if(!req.user) {
-      const err = new Error("Unauthorized")
-      err.status = 401
-      return next(err)      
+exports.delete_message_post = async (req, res, next) => {
+  try {
+    if (!req.user) {
+      const err = new Error("Unauthorized");
+      err.status = 401;
+      return next(err);
     }
-    await db.deleteMessage(req.body.msg_id, req.user.user_id)
-    return res.redirect("/")
+    await db.deleteMessage(req.body.msg_id, req.user.user_id);
+    return res.redirect("/");
   } catch (err) {
-    next(err)
+    next(err);
   }
-}
+};
 
 exports.secret_question_get = (req, res, next) => {
   try {
