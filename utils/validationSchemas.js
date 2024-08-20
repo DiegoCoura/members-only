@@ -13,9 +13,9 @@ exports.signUpValidationSchema = {
     },
     customSanitizer: {
       options: (fname) => {
-        return fname.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
-      }
-    }
+        return fname.toLowerCase().replace(/\b\w/g, (s) => s.toUpperCase());
+      },
+    },
   },
   last_name: {
     trim: true,
@@ -29,10 +29,9 @@ exports.signUpValidationSchema = {
     },
     customSanitizer: {
       options: (lname) => {
-        return lname.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
-      }
+        return lname.toLowerCase().replace(/\b\w/g, (s) => s.toUpperCase());
+      },
     },
-    
   },
   username: {
     notEmpty: {
@@ -54,24 +53,26 @@ exports.signUpValidationSchema = {
     },
   },
   password: {
-    trim: true,
-    isLength: {
+    trim: true,    
+    isStrongPassword: {
       options: {
-        min: 6,
-        max: 20,
+        minLength: 8,
+        minUppercase: 1,
+        minNumbers: 1,
+        minSymbols: 1,
       },
+      errorMessage: "Password must have at least 8 characters, 1 Uppercase, 1 number and 1 symbol"
     },
-    errorMessage: "password must contain between 6 and 20 characters.",
   },
   confirm_password: {
     custom: {
       options: (confirm_pass, { req }) => {
-        if(confirm_pass !== req.body.password){
-          throw new Error("Passwords does not match")
+        if (confirm_pass !== req.body.password) {
+          throw new Error("Passwords does not match");
         } else {
           return true;
         }
-      }
-    }
-  }
+      },
+    },
+  },
 };
