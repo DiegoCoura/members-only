@@ -11,6 +11,11 @@ exports.signUpValidationSchema = {
       errorMessage:
         "First name must be at least 5 characters with a max of 50 characters",
     },
+    customSanitizer: {
+      options: (fname) => {
+        return fname.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
+      }
+    }
   },
   last_name: {
     trim: true,
@@ -19,9 +24,15 @@ exports.signUpValidationSchema = {
         min: 3,
         max: 50,
       },
+      errorMessage:
+        "Last name must be at least 5 characters with a max of 50 characters",
     },
-    errorMessage:
-      "Last name must be at least 5 characters with a max of 50 characters",
+    customSanitizer: {
+      options: (lname) => {
+        return lname.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
+      }
+    },
+    
   },
   username: {
     notEmpty: {
