@@ -29,7 +29,7 @@ exports.createNewUser = async (userInfos) => {
 
 exports.getAllMessages = async () => {
   const { rows } = await pool.query(
-    "SELECT messages.*, users.username FROM messages LEFT JOIN users ON messages.user_id = users.user_id"
+    "SELECT messages.message_id, messages.user_id, messages.message, TO_CHAR(created_at, 'YYYY-MM-DD HH24:MI') as created_at, users.username FROM messages INNER JOIN users ON messages.user_id = users.user_id;"
   );
   return rows;
 };
