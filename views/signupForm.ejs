@@ -47,6 +47,13 @@
             <span class="error-msg"><%=err.msg%></span>
             <%}%>
         <% }) %>
+        <label for="confirm_password">Confirm password</label>
+        <input id="confirm_password" name="confirm_password" type="password" />
+        <% locals.errors && errors.find((err) => { %>
+          <% if(err.path === 'confirm_password') { %>
+            <span class="error-msg"><%=err.msg%></span>
+            <%}%>
+        <% }) %>
         <button>Sign Up</button>
         <strong class="text-center"
           >Already have an account? <a href="/login">Login</a></strong

@@ -25,11 +25,11 @@ exports.signUpValidationSchema = {
   },
   username: {
     notEmpty: {
-      errorMessage: "An email must be provided"
+      errorMessage: "An email must be provided",
     },
     trim: true,
     isEmail: {
-      errorMessage: "Invalid email"
+      errorMessage: "Invalid email",
     },
     custom: {
       options: async (email) => {
@@ -37,7 +37,7 @@ exports.signUpValidationSchema = {
         if (inUse) {
           throw new Error("User already exists!");
         } else {
-          return true
+          return true;
         }
       },
     },
@@ -45,11 +45,22 @@ exports.signUpValidationSchema = {
   password: {
     trim: true,
     isLength: {
-        options: {
-            min: 6,
-            max: 20
-        }
+      options: {
+        min: 6,
+        max: 20,
+      },
     },
-    errorMessage: "password must contain between 6 and 20 characters."
+    errorMessage: "password must contain between 6 and 20 characters.",
   },
+  confirm_password: {
+    custom: {
+      options: (confirm_pass, { req }) => {
+        if(confirm_pass !== req.body.password){
+          throw new Error("Passwords does not match")
+        } else {
+          return true;
+        }
+      }
+    }
+  }
 };
