@@ -7,13 +7,28 @@ const expressSession = require("express-session");
 const pgSession = require("connect-pg-simple")(expressSession);
 const pgPool = require("./db/pool");
 const passport = require("passport");
+const helmet = require("helmet");
+const compression = require("compression");
 require("./strategies/local-strategy");
 
 require("dotenv").config();
 
-const routes = require("./routes/index");
-
 const app = express();
+
+app.use(helmet());
+app.use(compression()); // Compress all routes
+
+const rateLimit = require("express-rate-limit");
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  limit: 50, // limit for each IP per `window`
+  standardHeaders: "draft-7",
+  legacyHeaders: false,
+});
+
+app.use(limiter);
+
+const routes = require("./routes/index");
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
