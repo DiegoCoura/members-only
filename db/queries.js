@@ -51,11 +51,11 @@ exports.deleteMessage = async (msgId, userId) => {
 };
 
 exports.createNewMessage = async (newMessage) => {
-  console.log(newMessage);
   const { rows } = await pool.query(
     "INSERT INTO messages (user_id, message) VALUES ($1, $2) RETURNING *",
     [newMessage.user_id, newMessage.message]
   );
+  console.log(newMessage);
   return rows;
 };
 

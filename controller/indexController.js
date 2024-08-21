@@ -6,6 +6,7 @@ const { hashPassword } = require("../utils/passwordUtils");
 exports.index = async (req, res, next) => {
   try {
     const clientTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    console.log(clientTz)
     const messages = await db.getAllMessages(clientTz);
     if (!req.user) {
       res.render("index", { user: "", messages: messages });
