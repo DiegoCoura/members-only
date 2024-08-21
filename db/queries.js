@@ -27,9 +27,9 @@ exports.createNewUser = async (userInfos) => {
   return rows;
 };
 
-exports.getAllMessages = async () => {
+exports.getAllMessages = async (clientTz) => {
   const { rows } = await pool.query(
-    "SELECT messages.message_id, messages.user_id, messages.message, TO_CHAR(created_at, 'YYYY-MM-DD HH24:MI') as created_at, users.username FROM messages INNER JOIN users ON messages.user_id = users.user_id;"
+    "SELECT messages.message_id, messages.user_id, messages.message, TO_CHAR(created_at at time zone ($1), 'YYYY-MM-DD HH24:MI') as created_at, users.username FROM messages INNER JOIN users ON messages.user_id = users.user_id;", [clientTz]
   );
   return rows;
 };
