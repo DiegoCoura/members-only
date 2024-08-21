@@ -10,6 +10,26 @@ body {
   color: #fff;
 }
 
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(17, 29, 54); 
+  border-radius: 8px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(14, 23, 46); 
+}
+
 a {
   color: #00b7ff;
 }
@@ -58,6 +78,7 @@ button:focus {
   flex-direction: column;
   background: rgb(27 40 67);
   overflow: overlay;
+  height: 85%;
 }
 
 .msg-card{
@@ -84,10 +105,10 @@ button:focus {
 }
 
 .new-msg-container {
-  position: sticky;
+  position: absolute;
   width: -webkit-fill-available;
   bottom: 10px;
-  margin: 15px 0;
+  padding: 15px 0px;
 }
 
 .new-msg-form {
