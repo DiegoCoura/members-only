@@ -32,6 +32,7 @@ body {
 
 a {
   color: #00b7ff;
+  text-wrap: nowrap;
 }
 
 input:focus,
@@ -134,6 +135,7 @@ button:focus {
   font-size: 1rem;
   font-weight: 700;
   color: #fff;
+  cursor: pointer;
 }
 
 .form-bottom-options {
