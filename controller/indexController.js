@@ -2,10 +2,12 @@ const { body, validationResult, checkSchema } = require("express-validator");
 const { signUpValidationSchema } = require("../utils/validationSchemas");
 const db = require("../db/queries");
 const { hashPassword } = require("../utils/passwordUtils");
-const moment = require("moment")
+const moment = require("moment-timezone")
 
 exports.index = async (req, res, next) => {
   try {
+    const currTimeZone = moment.tz.guess();
+    console.log(currTimeZone)
     const messages = await db.getAllMessages();
     if (!req.user) {
       res.render("index", { moment: moment, user: "", messages: messages });
