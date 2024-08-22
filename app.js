@@ -9,6 +9,7 @@ const pgPool = require("./db/pool");
 const passport = require("passport");
 const helmet = require("helmet");
 const compression = require("compression");
+const requestIp = require('request-ip');
 require("./strategies/local-strategy");
 
 require("dotenv").config();
@@ -17,6 +18,12 @@ const app = express();
 
 app.use(helmet());
 app.use(compression()); // Compress all routes
+
+app.use(requestIp.mw())
+app.use(function(req, res, next) {
+  const ip = req.clientIp;
+  next();
+});
 
 const rateLimit = require("express-rate-limit");
 const limiter = rateLimit({

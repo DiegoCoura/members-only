@@ -2,15 +2,23 @@ const { body, validationResult, checkSchema } = require("express-validator");
 const { signUpValidationSchema } = require("../utils/validationSchemas");
 const db = require("../db/queries");
 const { hashPassword } = require("../utils/passwordUtils");
-const moment = require("moment-timezone")
+const moment = require("moment-timezone");
+const geoip = require("geoip-lite");
 
 exports.index = async (req, res, next) => {
   try {
-    const currTimeZone = moment.tz.guess();
-    console.log(currTimeZone)
+    const geo = geoip.lookup(req.clientIp);
+    let client_tz = null;
+    if (geo !== null) client_tz = geo.timezone;
+
     const messages = await db.getAllMessages();
     if (!req.user) {
-      res.render("index", { moment: moment, user: "", messages: messages });
+      res.render("index", {
+        moment: moment,
+        user: "",
+        messages: messages,
+        client_tz: client_tz,
+      });
       return;
     }
     const user = {
@@ -20,7 +28,12 @@ exports.index = async (req, res, next) => {
       lastname: req.user.lastname,
       membership_status: req.user.membership_status,
     };
-    res.render("index", { moment: moment, user: user, messages: messages });
+    res.render("index", {
+      moment: moment,
+      user: user,
+      messages: messages,
+      client_tz: client_tz,
+    });
   } catch (err) {
     next(err);
   }

@@ -9,8 +9,6 @@
   </head>
   <body>
     <%- include('partials/navbar.ejs') %>
-    <% const time = new Date() %>
-    <p><%= time %></p>
     <div class="msg-board">
       <div class="messages-wrapper">
         <% if(locals.messages) { %> <% locals.messages.forEach((message) => { %>
@@ -32,8 +30,11 @@
             message.username : "Anonymous" %>
           </p>
           <p>Message: <%= message.message %></p>
+          <% if(client_tz) { %>
+            <p>Date: <%= moment(message.created_at).tz(client_tz).format('MM-DD-YYYY HH:mm') %></p> 
+          <%} else { %>
           <p>Date: <%= moment(message.created_at).tz('America/Sao_Paulo').format('MM-DD-YYYY HH:mm') %></p>
-          
+          <%}%>
         </div>
         <%})%> <%}%>
       </div>
