@@ -2,12 +2,13 @@ const { body, validationResult, checkSchema } = require("express-validator");
 const { signUpValidationSchema } = require("../utils/validationSchemas");
 const db = require("../db/queries");
 const { hashPassword } = require("../utils/passwordUtils");
+const moment = require("moment")
 
 exports.index = async (req, res, next) => {
   try {
     const messages = await db.getAllMessages();
     if (!req.user) {
-      res.render("index", { user: "", messages: messages });
+      res.render("index", { moment: moment, user: "", messages: messages });
       return;
     }
     const user = {
@@ -17,7 +18,7 @@ exports.index = async (req, res, next) => {
       lastname: req.user.lastname,
       membership_status: req.user.membership_status,
     };
-    res.render("index", { user: user, messages: messages });
+    res.render("index", { moment: moment, user: user, messages: messages });
   } catch (err) {
     next(err);
   }

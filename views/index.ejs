@@ -29,7 +29,7 @@
             message.username : "Anonymous" %>
           </p>
           <p>Message: <%= message.message %></p>
-          <p>Date: <%= message.created_at %></p>
+          <p>Date: <%= moment(message.created_at).format('MM-DD-YYYY HH:mm') %></p>
         </div>
         <%})%> <%}%>
       </div>
