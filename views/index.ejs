@@ -5,9 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Members-Only</title>
     <link rel="stylesheet" href="/stylesheets/style.css" />
+    
   </head>
   <body>
     <%- include('partials/navbar.ejs') %>
+    <% const time = new Date() %>
+    <p><%= time %></p>
     <div class="msg-board">
       <div class="messages-wrapper">
         <% if(locals.messages) { %> <% locals.messages.forEach((message) => { %>
@@ -29,7 +32,8 @@
             message.username : "Anonymous" %>
           </p>
           <p>Message: <%= message.message %></p>
-          <p>Date: <%= moment(message.created_at).tz(moment.tz.guess(true)).format('MM-DD-YYYY HH:mm') %></p>
+          <p>Date: <%= moment(message.created_at).tz('America/Sao_Paulo').format('MM-DD-YYYY HH:mm') %></p>
+          
         </div>
         <%})%> <%}%>
       </div>
